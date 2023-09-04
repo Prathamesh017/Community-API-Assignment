@@ -6,4 +6,9 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
-
+export interface IRole {
+  _id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

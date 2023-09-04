@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import * as dotenv from 'dotenv'
 import connectDB from './config/database';
 import authRouter from './routes/auth.route';
+import roleRouter from './routes/role.route';
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ app.get('/',(req: Request, res: Response):void => {
 
 
 app.use("/v1/auth",authRouter)
+app.use("/v1/role",roleRouter)
 
 
 
