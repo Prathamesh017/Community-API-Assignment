@@ -4,6 +4,8 @@ import * as dotenv from 'dotenv'
 import connectDB from './config/database';
 import authRouter from './routes/auth.route';
 import roleRouter from './routes/role.route';
+import communityRouter from './routes/community.route';
+import memberRouter from './routes/member.route';
 
 dotenv.config();
 const app = express();
@@ -13,13 +15,17 @@ var jsonParser = bodyParser.json()
 app.use(jsonParser);
 
 
-app.get('/',(req: Request, res: Response):void => {
+app.get('/', (req: Request, res: Response): void => {
   res.send('Welcome To Community API');
 });
 
 
-app.use("/v1/auth",authRouter)
-app.use("/v1/role",roleRouter)
+app.use("/v1/auth", authRouter)
+app.use("/v1/role", roleRouter)
+app.use("/v1/community", communityRouter)
+app.use("/v1/member", memberRouter)
+
+
 
 
 

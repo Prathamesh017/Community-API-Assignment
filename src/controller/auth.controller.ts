@@ -3,6 +3,8 @@ import { userLoginValidation, userRegisterValidation } from '../validators/valid
 import { hashPassword, generateToken, validatePassword, IDGenerator } from '../utility/utility';
 import { userModel } from '../models/user.model';
 import { CustomRequest } from '../middleware/middleware';
+// @api - v1/auth/signup POST
+// @desc - register user
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { error } = userRegisterValidation.validate(req.body);
@@ -37,7 +39,7 @@ export const registerUser = async (req: Request, res: Response) => {
         "status": true,
         "content": {
           "data": {
-            "_id": user.id,
+            "id": user.id,
             "name": user.name,
             "email": user.email,
             "created_at": user.createdAt,
@@ -58,7 +60,9 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 }
 
-
+// @api - v1/auth/signin POST
+// @desc - login user
+//@access - public
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { error } = userLoginValidation.validate(req.body);
@@ -85,12 +89,11 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     if (user) {
       let token = await generateToken(user.id)
-      let { password, ...userObj } = user;
       res.status(201).json({
         "status": true,
         "content": {
           "data": {
-            "_id": user.id,
+            "id": user.id,
             "name": user.name,
             "email": user.email,
             "created_at": user.createdAt
@@ -112,6 +115,9 @@ export const loginUser = async (req: Request, res: Response) => {
 }
 
 
+// @api - v1/auth/me  GET
+// @desc - get authorized  user details
+//@access - protected  requires token
 export const getMe = async (req: Request, res: Response) => {
   try {
     let _id = (req as CustomRequest).user.id;
@@ -137,7 +143,7 @@ export const getMe = async (req: Request, res: Response) => {
       status: 'failure',
       message: error.message,
     })
-}
+  }
 
 }
 

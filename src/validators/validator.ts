@@ -10,6 +10,18 @@ export const userLoginValidation = Joi.object({
 });
 export const roleValidation = Joi.object({
   name: Joi.string().min(2).required(),
+  scopes: Joi.array().items(Joi.string())
+});
+export const communityValidation = Joi.object({
+  name: Joi.string().min(2).required(),
+});
+
+export const memberValidation = Joi.object({
+  community: Joi.string().required(),
+  user: Joi.string().required(),
+  role: Joi.string().required(),
+  
 
 });
+
 

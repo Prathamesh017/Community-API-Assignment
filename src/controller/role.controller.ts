@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import { roleValidation } from "../validators/validator";
 import { roleModel } from "../models/role.model";
 import { IDGenerator } from "../utility/utility";
+
+// @api v1/role POST
+//@desc Create A Role
+//@access public
 export const createRole = async (req: Request, res: Response) => {
   try {
     const { error } = roleValidation.validate(req.body);
@@ -11,11 +15,12 @@ export const createRole = async (req: Request, res: Response) => {
         "message": error.message
       })
     }
-    const { name } = req.body;
+    const { name,scopes } = req.body;
 
     const role = new roleModel({
       _id: await IDGenerator(),
       name,
+      scopes,
     });
     await role.save();
     if (role) {
@@ -43,7 +48,9 @@ export const createRole = async (req: Request, res: Response) => {
   }
 }
 
-
+// @api v1/role POST
+//@desc Get all Roles
+//@access public
 export const getAllRoles = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1; // Current page (default to 1)
