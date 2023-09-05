@@ -23,26 +23,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.memberValidation = exports.communityValidation = exports.roleValidation = exports.userLoginValidation = exports.userRegisterValidation = void 0;
-const Joi = __importStar(require("joi"));
-exports.userRegisterValidation = Joi.object({
-    name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-});
-exports.userLoginValidation = Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-});
-exports.roleValidation = Joi.object({
-    name: Joi.string().min(2).required(),
-    scopes: Joi.array().items(Joi.string())
-});
-exports.communityValidation = Joi.object({
-    name: Joi.string().min(2).required(),
-});
-exports.memberValidation = Joi.object({
-    community: Joi.string().required(),
-    user: Joi.string().required(),
-    role: Joi.string().required(),
-});
+const express_1 = require("express");
+const middleware_1 = __importStar(require("../middleware/middleware"));
+const member_controller_1 = require("../controller/member.controller");
+const memberRouter = (0, express_1.Router)();
+memberRouter.post("/", middleware_1.default, (0, middleware_1.authorizeScope)("member-add"), member_controller_1.createMember).delete("/:id", middleware_1.default, (0, middleware_1.authorizeScope)("member-remove"), member_controller_1.deleteMember);
+exports.default = memberRouter;

@@ -8,24 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongodb_1 = require("mongodb");
+const mongoose_1 = __importDefault(require("mongoose"));
 function connectDB() {
     return __awaiter(this, void 0, void 0, function* () {
-        const uri = process.env.DATABASE_URL || "";
-        const client = new mongodb_1.MongoClient(uri);
-        console.log(uri);
-        try {
-            yield client.connect().then(() => {
-                console.log('Connected to database ');
-            })
-                .catch((err) => {
-                console.error(`Error connecting to the database. \n${err}`);
-            });
-        }
-        finally {
-            client.close();
-        }
+        yield mongoose_1.default.connect(process.env.DATABASE_URL).then(() => {
+            console.log('Connected to database ');
+        }).catch((err) => {
+            console.error(`Error connecting to the database. \n${err}`);
+        });
     });
 }
 exports.default = connectDB;

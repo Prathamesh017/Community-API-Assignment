@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userModel = void 0;
+exports.communityModel = void 0;
 const mongoose_1 = require("mongoose");
-const userSchema = new mongoose_1.Schema({
+const communitySchema = new mongoose_1.Schema({
     _id: {
         type: String,
         required: true
@@ -11,15 +11,16 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    email: {
+    slug: {
         type: String,
         required: true,
         unique: true
     },
-    password: {
+    ownerId: {
         type: String,
+        ref: 'User',
         required: true,
     },
 });
-userSchema.set("timestamps", true);
-exports.userModel = (0, mongoose_1.model)('User', userSchema);
+communitySchema.set("timestamps", true);
+exports.communityModel = (0, mongoose_1.model)('Community', communitySchema);

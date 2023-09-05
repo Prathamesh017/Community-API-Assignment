@@ -40,6 +40,9 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv = __importStar(require("dotenv"));
 const database_1 = __importDefault(require("./config/database"));
 const auth_route_1 = __importDefault(require("./routes/auth.route"));
+const role_route_1 = __importDefault(require("./routes/role.route"));
+const community_route_1 = __importDefault(require("./routes/community.route"));
+const member_route_1 = __importDefault(require("./routes/member.route"));
 dotenv.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT;
@@ -49,6 +52,9 @@ app.get('/', (req, res) => {
     res.send('Welcome To Community API');
 });
 app.use("/v1/auth", auth_route_1.default);
+app.use("/v1/role", role_route_1.default);
+app.use("/v1/community", community_route_1.default);
+app.use("/v1/member", member_route_1.default);
 app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, database_1.default)();

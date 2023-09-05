@@ -12,9 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateToken = exports.validatePassword = exports.hashPassword = void 0;
+exports.createMemberFunc = exports.createSlug = exports.IDGenerator = exports.generateToken = exports.validatePassword = exports.hashPassword = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const snowflake_1 = require("@theinternetfolks/snowflake");
+const slugify_1 = __importDefault(require("slugify"));
+const member_model_1 = require("../models/member.model");
 // @description - to hash and secure password
 const hashPassword = (password) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,9 +32,9 @@ const hashPassword = (password) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.hashPassword = hashPassword;
 // @description - to decrypt and match password
-const validatePassword = (password, hash) => __awaiter(void 0, void 0, void 0, function* () {
+const validatePassword = (password, userPassword) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let isPasswordCorrect = yield bcrypt_1.default.compare(password, hash);
+        let isPasswordCorrect = yield bcrypt_1.default.compare(password, userPassword);
         return isPasswordCorrect ? true : false;
     }
     catch (error) {
@@ -47,3 +50,30 @@ const generateToken = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return token;
 });
 exports.generateToken = generateToken;
+//@description - SnowFlake ID generator
+const IDGenerator = () => __awaiter(void 0, void 0, void 0, function* () {
+    return snowflake_1.Snowflake.generate();
+});
+exports.IDGenerator = IDGenerator;
+//@description - Slug generator
+function createSlug(name) {
+    return (0, slugify_1.default)(name, {
+        lower: true,
+        remove: /[*+~.()'"!:@]/g,
+        replacement: '-', // Replace spaces with hyphens
+    });
+}
+exports.createSlug = createSlug;
+function createMemberFunc(communityId, roleId, userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const member = new member_model_1.memberModel({
+            _id: yield (0, exports.IDGenerator)(),
+            communityId,
+            roleId,
+            userId
+        });
+        yield member.save();
+        return member;
+    });
+}
+exports.createMemberFunc = createMemberFunc;
