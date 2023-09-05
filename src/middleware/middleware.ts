@@ -3,10 +3,8 @@ import jwt, { Secret } from 'jsonwebtoken'
 import { memberModel } from "../models/member.model";
 import { roleModel } from "../models/role.model";
 
-const scopes = {
-  CommunityAdmin: ["add-member", "delete-member"],
-  CommunityMember: ["add-member"]
-}
+
+
 interface jwtPayload {
   id: string;
 }
@@ -46,25 +44,24 @@ export const authorizeScope = (role: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       let id = (req as CustomRequest).user.id;
-     
+
       let member = await memberModel.findOne({ userId: id })
       if (!member) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-  
       let roles = await roleModel.findOne({ _id: member.roleId })
       if (!roles) {
-        
         return res.status(401).json({ message: 'Unauthorized' });
       }
+
+
       if (!roles.scopes.includes(role)) {
-       
         return res.status(401).json({ message: 'Unauthorized' });
       }
-      else{
+      else {
         next();
       }
-      
+
     }
     catch (error) {
       return res.status(403).json({ message: 'Forbidden' });

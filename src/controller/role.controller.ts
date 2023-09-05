@@ -54,7 +54,7 @@ export const createRole = async (req: Request, res: Response) => {
 export const getAllRoles = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1; // Current page (default to 1)
-    const perPage = parseInt(req.query.perPage as string) || 3; // 3 roles per page default
+    const perPage = parseInt(req.query.perPage as string) || 5; // 5 roles per page default
     const roles = await roleModel.find({}).skip((page - 1) * perPage)
       .limit(perPage);;
     if (!roles) {
@@ -65,7 +65,7 @@ export const getAllRoles = async (req: Request, res: Response) => {
     }
     const meta = {
       total: roles.length,
-      pages: (roles.length / perPage),
+      pages: Math.ceil(roles.length / perPage),
       page: page,
     };
 

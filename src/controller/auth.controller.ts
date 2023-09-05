@@ -84,7 +84,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!isPasswordCorrect) {
       return res.status(401).json({
         "status": false,
-        "message": "Invalid Creditanals"
+        "message": "Invalid Credentials"
       })
     }
     if (user) {
