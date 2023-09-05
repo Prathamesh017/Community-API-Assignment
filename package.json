@@ -6,6 +6,7 @@
   "module": "module",
   "scripts": {
     "build": "npx tsc ",
+    "start": "node build/index.js",
     "dev": "npx tsc && node ./build/index.js",
     "server": "nodemon - exec 'ts-node' src/index.ts"
   },
